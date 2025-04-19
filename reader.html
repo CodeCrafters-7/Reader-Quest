@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reader Quest</title>
+  <meta name="description" content="Reader Quest - A web app for authors to publish and readers to explore and read works with personalized features." />
+  <meta name="keywords" content="Reader Quest, author publish, reader translate, books, stories, novels, poems" />
+  <meta name="author" content="CodeCrafters-7" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="https://images.squarespace-cdn.com/content/v1/63db562b53fc5e6e59ef802c/49526bb3-64ba-4b8e-bd28-113b7c7f4197/fredfigueiredo_A_visual_representation_of_the_effects_of_storyt_0803f74f-c468-4c12-aef7-522426924084.png" type="image/png" />
+</head>
+<body class="bg-gray-900 text-white font-['Roboto'] min-h-screen flex flex-col">
+  <header class="bg-gray-800 p-4 flex items-center justify-between">
+    <div class="flex items-center gap-3 flex-grow">
+      <img src="https://images.squarespace-cdn.com/content/v1/63db562b53fc5e6e59ef802c/49526bb3-64ba-4b8e-bd28-113b7c7f4197/fredfigueiredo_A_visual_representation_of_the_effects_of_storyt_0803f74f-c468-4c12-aef7-522426924084.png" alt="App Icon" class="w-10 h-10 object-contain rounded" />
+      <div class="text-2xl font-bold text-center flex-grow">Reader Quest</div>
+    </div>
+    <button id="menuBtn" aria-label="Toggle menu" class="text-white text-2xl focus:outline-none">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="roleMenu" class="hidden absolute top-16 right-4 bg-gray-800 rounded shadow-lg w-40 z-50">
+      <ul class="flex flex-col">
+        <li>
+          <button id="menuReaderBtn" class="w-full text-left px-4 py-2 hover:bg-gray-700 focus:outline-none">
+            Reader
+          </button>
+        </li>
+        <li>
+          <button id="menuAuthorBtn" class="w-full text-left px-4 py-2 hover:bg-gray-700 focus:outline-none">
+            Author
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="flex flex-col flex-grow p-4 gap-6 max-w-7xl mx-auto w-full">
+    <!-- Role Selection -->
+    <section id="roleSelection" class="hidden bg-gray-800 rounded-lg p-6 shadow-lg max-w-md mx-auto text-center">
+      <h2 class="text-2xl font-semibold mb-6">Welcome! Please select your role:</h2>
+      <div class="flex justify-center gap-6">
+        <button id="readerBtn" class="bg-blue-600 hover:bg-blue-700 transition rounded py-3 px-6 font-semibold text-white">
+          Reader
+        </button>
+        <button id="authorBtn" class="bg-green-600 hover:bg-green-700 transition rounded py-3 px-6 font-semibold text-white">
+          Author
+        </button>
+      </div>
+    </section>
+
+    <!-- Reader Section -->
+    <section id="readerSection" class="hidden flex flex-col bg-gray-800 rounded-lg p-4 shadow-lg">
+      <h2 class="text-xl font-semibold mb-4">Published Works</h2>
+      <div class="mb-4 flex flex-wrap gap-3 items-center">
+        <label for="filterAuthor" class="mr-2">Filter by Author:</label>
+        <select id="filterAuthor"
+          class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="all" selected>All Authors</option>
+        </select>
+        <div class="relative ml-4">
+          <input type="text" id="authorSearch" placeholder="Search by author name"
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10" />
+          <button id="searchBtn" aria-label="Search" 
+            class="absolute right-1 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 focus:outline-none">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="ml-6 flex items-center gap-2">
+          <label for="readerEmail" class="text-sm">Your Gmail ID:</label>
+          <input type="email" id="readerEmail" placeholder="example@gmail.com"
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-48" />
+        </div>
+      </div>
+      <div id="worksList" class="overflow-y-auto flex-grow space-y-4"></div>
+
+      <div id="translationSection" class="mt-6 hidden flex-col gap-3" style="display:none;">
+        <!-- Translation feature removed as per request -->
+      </div>
+      <div id="pdfViewerSection" class="mt-6 hidden flex-col gap-3">
+        <h3 class="text-lg font-semibold">PDF Viewer</h3>
+        <embed id="pdfViewer" type="application/pdf" width="100%" height="600px" />
+      </div>
+    </section>
+
+    <!-- Author Section -->
+    <section id="authorSection" class="hidden flex flex-col md:flex-row flex-grow gap-6">
+      <!-- Author Submission -->
+      <section class="md:w-1/3 bg-gray-800 rounded-lg p-4 shadow-lg">
+        <h2 class="text-xl font-semibold mb-4">Publish Your Work</h2>
+        <form id="publishForm" class="flex flex-col gap-3">
+          <input type="text" id="authorName" placeholder="Author Name" required
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="text" id="workTitle" placeholder="Title" required
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <select id="workType" required
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="" disabled selected>Select Type</option>
+            <option value="Story">Story</option>
+            <option value="Novel">Novel</option>
+            <option value="Poem">Poem</option>
+          </select>
+          <label class="block text-sm mt-2 mb-1" for="workGenre">Select Genre(s):</label>
+          <select id="workGenre" multiple
+            class="p-2 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="Fantasy">Fantasy</option>
+            <option value="Science Fiction">Science Fiction</option>
+            <option value="Romance">Romance</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Non-fiction">Non-fiction</option>
+            <option value="Historical">Historical</option>
+            <option value="Poetry">Poetry</option>
+            <option value="Other">Other</option>
+          </select>
+          <label class="block text-sm mt-2 mb-1" for="workSummary">Summary:</label>
+          <textarea id="workSummary" rows="3" placeholder="Write a brief summary of your work..."
+            class="p-2 rounded bg-gray-700 text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <textarea id="workContent" rows="6" placeholder="Write your work here..." 
+            class="p-2 rounded bg-gray-700 text-white resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <label class="block text-sm mt-2 mb-1" for="workFile">Upload PDF file (optional):</label>
+          <input type="file" id="workFile" accept="application/pdf" class="text-gray-300 bg-gray-700 p-2 rounded w-full" />
+          <label class="block text-sm mt-2 mb-1" for="coverImage">Upload Cover Image (optional):</label>
+          <input type="file" id="coverImage" accept="image/*" class="text-gray-300 bg-gray-700 p-2 rounded w-full" />
+          <button type="submit"
+            class="bg-blue-600 hover:bg-blue-700 transition rounded py-2 font-semibold text-white flex items-center justify-center gap-2 mt-3">
+            <i class="fas fa-upload"></i> Publish
+          </button>
+        </form>
+      </section>
+
+      <!-- Author Manage Works -->
+      <section class="md:w-2/3 bg-gray-800 rounded-lg p-4 shadow-lg flex flex-col">
+        <h2 class="text-xl font-semibold mb-4">Manage Your Works</h2>
+        <div id="authorWorksList" class="overflow-y-auto flex-grow space-y-4"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 p-4 text-center text-sm text-gray-400">
+    &copy; 2024 Author Publish & Reader Translate
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
