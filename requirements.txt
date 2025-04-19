@@ -1,4 +1,1 @@
-1.A modern web browser supporting HTML5, CSS3, and JavaScript ES6+.
-2.Internet access to load external resources such as Tailwind CSS, Google Fonts, and Font Awesome via CDN.
-3.The application files served via a web server or opened locally in the browser.
-4.No backend or database is required as data is stored in browser localStorage
+
